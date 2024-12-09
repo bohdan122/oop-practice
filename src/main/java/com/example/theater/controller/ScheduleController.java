@@ -38,4 +38,10 @@ public class ScheduleController {
         scheduleService.addSchedule(scheduleRequest);
         return "redirect:/schedule?startDate=2023-12-01&endDate=2023-12-31"; // Перенаправлення на графік
     }
+
+    @GetMapping("/deleteSchedule")
+    public String deleteSchedule(@RequestParam("id") Long id) {
+        scheduleService.deleteSchedule(id);
+        return "redirect:/schedule?startDate=2023-12-01&endDate=2023-12-31";
+    }
 }

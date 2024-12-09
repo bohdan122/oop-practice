@@ -49,4 +49,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         response.setStage(schedule.getStage());
         return response;
     }
+
+    @Override
+    public void deleteSchedule(Long id) {
+        scheduleRepository.deleteById(id);
+    }
 }

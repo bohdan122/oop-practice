@@ -33,6 +33,10 @@
                     <td th:text="${item.date}"></td>
                     <td th:text="${item.director}"></td>
                     <td th:text="${item.stage}"></td>
+
+                    <td>
+                        <a th:href="@{/deleteSchedule(id=${item.id})}" class="btn btn-danger btn-sm">Видалити</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

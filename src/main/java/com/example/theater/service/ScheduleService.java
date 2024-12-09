@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ScheduleService {
     ScheduleResponse addSchedule(ScheduleRequest request);
-
+    void deleteSchedule(Long id);
     List<ScheduleResponse> getSchedule(LocalDate startDate, LocalDate endDate);
 }
