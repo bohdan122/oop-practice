@@ -17,14 +17,14 @@ public class Schedule {
     private String title;
 
     @Column(nullable = false)
-    private int performanceNumber; // Номер вистави в день
+    private int performanceNumber;
 
     @Column(nullable = false)
-    private LocalDate date; // Дата показу
+    private LocalDate date;
 
     @Column(nullable = false)
-    private String director; // Режисер
+    private String director;
 
     @Column(nullable = false)
-    private String stage; // Сцена
+    private String stage;
 }
