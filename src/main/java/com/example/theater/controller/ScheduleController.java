@@ -3,8 +3,11 @@ package com.example.theater.controller;
 import com.example.theater.dto.ScheduleResponse;
 import com.example.theater.dto.ScheduleRequest;
 import com.example.theater.service.ScheduleService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +46,10 @@ public class ScheduleController {
     public String deleteSchedule(@RequestParam("id") Long id) {
         scheduleService.deleteSchedule(id);
         return "redirect:/schedule?startDate=2023-12-01&endDate=2023-12-31";
+    }
+
+     @PostMapping
+    public ResponseEntity<String> createSchedule(@Valid @RequestBody ScheduleResponse scheduleResponse) {
+        return ResponseEntity.ok("Schedule added successfully");
     }
 }
