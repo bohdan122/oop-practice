@@ -6,7 +6,8 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class ScheduleRequest {
+public class ScheduleRequestDTO {
+
 
     @NotBlank(message = "Title is mandatory")
     @Size(max = 100, message = "Title cannot exceed 100 characters")
@@ -27,4 +28,39 @@ public class ScheduleRequest {
     @NotBlank(message = "Stage is mandatory")
     @Size(max = 50, message = "Stage name cannot exceed 50 characters")
     private String stage;
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getPerformanceNumber() {
+        return performanceNumber;
+    }
+    public void setPerformanceNumber(int performanceNumber) {
+        this.performanceNumber = performanceNumber;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getStage() {
+        return stage;
+    }
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
 }
