@@ -1,38 +1,32 @@
-package com.example.theater.entity;
+package com.example.theater.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "schedule")
-public class Schedule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ScheduleRequestDTO {
 
-    @Column(nullable = false)
+
+    @NotNull(message = "Title is mandatory")
+    @Size(min=3, max = 100, message = "Title cannot exceed 100 characters")
     private String title;
 
-    @Column(nullable = false)
+    @Min(value = 1, message = "Performance number must be at least 1")
+    @Max(value = 100, message = "Performance number cannot exceed 100")
     private int performanceNumber;
 
-    @Column(nullable = false)
+    @NotNull(message = "Date is mandatory")
+    @FutureOrPresent(message = "Date must be today or in the future")
     private LocalDate date;
 
-    @Column(nullable = false)
+    @NotNull(message = "Director is mandatory")
+    @Size(max = 50, message = "Director name cannot exceed 50 characters")
     private String director;
 
-    @Column(nullable = false)
+    @NotNull(message = "Stage is mandatory")
+    @Size(max = 50, message = "Stage name cannot exceed 50 characters")
     private String stage;
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
