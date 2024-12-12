@@ -21,7 +21,6 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
-    // Get schedule by ID
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleRequestDTO> getScheduleById(@PathVariable Long id) {
         return scheduleService.findById(id)
