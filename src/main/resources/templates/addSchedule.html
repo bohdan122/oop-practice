@@ -11,27 +11,27 @@
         <form action="/addSchedule" method="post">
             <div class="form-group">
                 <label for="title">Назва вистави:</label>
-                <input type="text" id="title" name="title" class="form-control" required>
+                <input type="text" id="title" name="title" class="form-control" required minlength="3" maxlength="100">
             </div>
 
             <div class="form-group">
                 <label for="performanceNumber">Номер вистави:</label>
-                <input type="number" id="performanceNumber" name="performanceNumber" class="form-control" required>
+                <input type="number" id="performanceNumber" name="performanceNumber" class="form-control" required min="1">
             </div>
 
             <div class="form-group">
                 <label for="date">Дата:</label>
-                <input type="date" id="date" name="date" class="form-control" required>
+                <input type="date" id="date" name="date" class="form-control" required pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD">
             </div>
 
             <div class="form-group">
                 <label for="director">Режисер:</label>
-                <input type="text" id="director" name="director" class="form-control" required>
+                <input type="text" id="director" name="director" class="form-control" required minlength="3" maxlength="50">
             </div>
 
             <div class="form-group">
                 <label for="stage">Сцена:</label>
-                <input type="text" id="stage" name="stage" class="form-control" required>
+                <input type="text" id="stage" name="stage" class="form-control" required minlength="3" maxlength="50">
             </div>
 
             <button type="submit" class="btn btn-primary">Додати</button>
