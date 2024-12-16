@@ -4,6 +4,7 @@ import com.example.theater.dto.ScheduleRequestDTO;
 import com.example.theater.entity.Schedule;
 import com.example.theater.repository.ScheduleRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -18,6 +19,10 @@ public class ScheduleService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    public List<Schedule> findAll() {
+        return scheduleRepository.findAll();
+    }
 
     public ScheduleRequestDTO convertToDto(Schedule schedule) {
         return modelMapper.map(schedule, ScheduleRequestDTO.class);

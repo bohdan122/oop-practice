@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Schedules</title>
+</head>
+<body>
+    <h1>Schedule List</h1>
+    <a th:href="@{/schedule/create}">Create New Schedule</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Director</th>
+                <th>Stage</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="schedule : ${schedules}">
+                <td th:text="${schedule.title}">Title</td>
+                <td th:text="${schedule.date}">Date</td>
+                <td th:text="${schedule.director}">Director</td>
+                <td th:text="${schedule.stage}">Stage</td>
+                <td>
+                    <a th:href="@{/schedule/edit/{id}(id=${schedule.id})}">Edit</a> |
+                    <a th:href="@{/schedule/delete/{id}(id=${schedule.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Скрипт для авторизації та запитів -->
+    <script>
+        // Функція для збереження токену в localStorage
+        function saveToken(token) {
+            localStorage.setItem('authToken', token);
+        }
+
+        // Функція для отримання токену з localStorage
+        function getToken() {
+            console.log(localStorage.getItem('authToken'));
+            return localStorage.getItem('authToken');
+        }
+
+        // Функція для додавання заголовку Authorization до всіх запитів
+        function setAuthHeader(options = {"Authorization": `"${token}"`}) {
+            const token = getToken();
+            if (token) {
+                const headers = {
+                    'Authorization': token,
+                    ...options.headers // Мерджимо будь-які додаткові заголовки
+                };
+                return { ...options, headers };
+            } else {
+                console.log('Token not found');
+                return options;
+            }
+        }
+
+        // Функція для виконання GET запиту з авторизацією
+        function fetchWithAuth(url, options = {}) {
+            const requestOptions = setAuthHeader(options);
+            return fetch(url, requestOptions)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Використання: Наприклад, для отримання списку розкладів
+        fetchWithAuth('/schedule')
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+    </script>
+
+</body>
+</html>

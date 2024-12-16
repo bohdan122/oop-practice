@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login Successful</title>
+</head>
+<body>
+    <h1>Login Successful</h1>
+    <p>Your token:</p>
+    <!-- Токен буде вставлений за допомогою Thymeleaf -->
+    <textarea id="token" readonly th:text="${token}" style="width: 100%; height: 100px;"></textarea>
+    <br />
+    <button id="homepageBtn" th:href="@{/schedule}">Go to Homepage</button>
+
+    <script>
+        // Отримуємо кнопку за її ID
+        const homepageButton = document.getElementById('homepageBtn');
+    
+        // Додаємо обробник події
+        homepageButton.addEventListener('click', function (event) {
+            // Отримуємо посилання з атрибута href кнопки
+            const href = event.target.getAttribute('th:href') || '/schedule'; // Default значення
+            
+            // Виконати додаткові дії перед переходом
+            console.log("Button clicked. Redirecting to the homepage...");
+            
+            // Наприклад, логіка роботи з токеном
+            if (localStorage.getItem('authToken')) {
+                console.log("Token exists in localStorage");
+            } else {
+                console.log("Token is missing in localStorage");
+            }
+    
+            // Переходимо на сторінку
+            window.location.href = href;
+        });
+    </script>
+    
+</body>
+</html>

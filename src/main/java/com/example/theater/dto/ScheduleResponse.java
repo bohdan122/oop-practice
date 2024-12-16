@@ -1,7 +1,5 @@
 package com.example.theater.dto;
 
-import lombok.Data;
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 

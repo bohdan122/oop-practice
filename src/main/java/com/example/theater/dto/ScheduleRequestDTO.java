@@ -1,7 +1,6 @@
 package com.example.theater.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.Data;
 
 import java.time.LocalDate;
 

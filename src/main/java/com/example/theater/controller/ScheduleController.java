@@ -1,71 +1,84 @@
 package com.example.theater.controller;
 
 import com.example.theater.dto.ScheduleRequestDTO;
-import com.example.theater.dto.ScheduleResponse;
 import com.example.theater.entity.Schedule;
 import com.example.theater.service.ScheduleService;
 
-import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/schedule")
+@Controller
+@RequestMapping("/schedules")
 public class ScheduleController {
 
     @Autowired
     private ScheduleService scheduleService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ScheduleRequestDTO> getScheduleById(@PathVariable Long id) {
-        return scheduleService.findById(id)
-                .map(schedule -> ResponseEntity.ok(scheduleService.convertToDto(schedule))) // Now works with updated convertToDto method
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping
+    public String listSchedules(Model model) {
+        List<Schedule> schedules = scheduleService.findAll();
+        model.addAttribute("schedules", schedules);
+        return "schedule/list";
     }
 
-    // Create new schedule
-    @PostMapping
-    public ResponseEntity<ScheduleRequestDTO> createSchedule(@Valid @RequestBody ScheduleRequestDTO scheduleRequestDTO) {
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("schedule", new ScheduleRequestDTO());
+        return "schedule/create";
+    }
+
+    @PostMapping("/create")
+    public String createSchedule(@Valid @ModelAttribute("schedule") ScheduleRequestDTO scheduleRequestDTO,
+                                  BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "schedule/create";
+        }
         Schedule schedule = scheduleService.convertToEntity(scheduleRequestDTO);
-        Schedule savedSchedule = scheduleService.save(schedule);
-        return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.convertToDto(savedSchedule));
+        scheduleService.save(schedule);
+        return "redirect:/schedule";
     }
-    
 
-    // Update existing schedule
-    @PutMapping("/{id}")
-    public ResponseEntity<ScheduleRequestDTO> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDTO scheduleRequestDTO) {
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Optional<Schedule> scheduleOptional = scheduleService.findById(id);
+        if (scheduleOptional.isPresent()) {
+            model.addAttribute("schedule", scheduleService.convertToDto(scheduleOptional.get()));
+            return "schedule/edit";
+        } else {
+            return "redirect:/schedule";
+        }
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateSchedule(@PathVariable Long id, @Valid @ModelAttribute("schedule") ScheduleRequestDTO scheduleRequestDTO,
+                                  BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "schedule/edit";
+        }
+
         Optional<Schedule> existingSchedule = scheduleService.findById(id);
-
         if (existingSchedule.isPresent()) {
             Schedule scheduleToUpdate = existingSchedule.get();
-            // Map properties from ScheduleRequestDTO to Schedule entity
             scheduleToUpdate.setTitle(scheduleRequestDTO.getTitle());
             scheduleToUpdate.setDate(scheduleRequestDTO.getDate());
             scheduleToUpdate.setDirector(scheduleRequestDTO.getDirector());
             scheduleToUpdate.setStage(scheduleRequestDTO.getStage());
             scheduleToUpdate.setPerformanceNumber(scheduleRequestDTO.getPerformanceNumber());
 
-            Schedule updatedSchedule = scheduleService.save(scheduleToUpdate);
-            return ResponseEntity.ok(scheduleService.convertToDto(updatedSchedule));
-        } else {
-            return ResponseEntity.notFound().build();
+            scheduleService.save(scheduleToUpdate);
         }
+        return "redirect:/schedule";
     }
 
-    // Delete schedule by ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
-        if (scheduleService.findById(id).isPresent()) {
-            scheduleService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/delete/{id}")
+    public String deleteSchedule(@PathVariable Long id) {
+        scheduleService.deleteById(id);
+        return "redirect:/schedule";
     }
 }
