@@ -1,11 +1,17 @@
 package com.example.theater.dto;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
 public class ScheduleRequestDTO {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotNull(message = "Title is mandatory")
     @Size(min=3, max = 100, message = "Title cannot exceed 100 characters")
@@ -60,5 +66,12 @@ public class ScheduleRequestDTO {
     }
     public void setStage(String stage) {
         this.stage = stage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 }

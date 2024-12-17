@@ -30,19 +30,29 @@ public class ScheduleController {
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("schedule", new ScheduleRequestDTO());
-        return "schedule/create";
+        return "schedule/create"; // This is the form view
+    }
+    
+@PostMapping("/create")
+public String createSchedule(@Valid @ModelAttribute("schedule") ScheduleRequestDTO scheduleRequestDTO,
+                              BindingResult result, Model model) {
+    if (result.hasErrors()) {
+        result.getFieldErrors().forEach(error -> 
+            System.out.println("Validation error: " + error.getField() + " - " + error.getDefaultMessage()));
+        return "schedule/create"; // Return the form with validation errors
     }
 
-    @PostMapping("/create")
-    public String createSchedule(@Valid @ModelAttribute("schedule") ScheduleRequestDTO scheduleRequestDTO,
-                                  BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "schedule/create";
-        }
-        Schedule schedule = scheduleService.convertToEntity(scheduleRequestDTO);
-        scheduleService.save(schedule);
-        return "redirect:/schedule";
-    }
+    // Перевірка, чи коректно мапиться DTO у сутність
+    Schedule schedule = scheduleService.convertToEntity(scheduleRequestDTO);
+    System.out.println("Mapped Schedule Entity: " + schedule);
+
+    // Спроба збереження у базу
+    scheduleService.save(schedule);
+    System.out.println("Schedule saved successfully!");
+
+    return "redirect:/schedules"; // Повернення до списку розкладів
+}
+
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
@@ -51,7 +61,7 @@ public class ScheduleController {
             model.addAttribute("schedule", scheduleService.convertToDto(scheduleOptional.get()));
             return "schedule/edit";
         } else {
-            return "redirect:/schedule";
+            return "redirect:/schedules";
         }
     }
 
@@ -73,12 +83,12 @@ public class ScheduleController {
 
             scheduleService.save(scheduleToUpdate);
         }
-        return "redirect:/schedule";
+        return "redirect:/schedules";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteSchedule(@PathVariable Long id) {
         scheduleService.deleteById(id);
-        return "redirect:/schedule";
+        return "redirect:/schedules";
     }
 }

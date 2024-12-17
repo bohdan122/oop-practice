@@ -9,7 +9,7 @@
     <!-- Токен буде вставлений за допомогою Thymeleaf -->
     <textarea id="token" readonly th:text="${token}" style="width: 100%; height: 100px;"></textarea>
     <br />
-    <button id="homepageBtn" th:href="@{/schedule}">Go to Homepage</button>
+    <button id="homepageBtn" th:href="@{/schedules}">Go to Homepage</button>
 
     <script>
         // Отримуємо кнопку за її ID
@@ -18,7 +18,7 @@
         // Додаємо обробник події
         homepageButton.addEventListener('click', function (event) {
             // Отримуємо посилання з атрибута href кнопки
-            const href = event.target.getAttribute('th:href') || '/schedule'; // Default значення
+            const href = event.target.getAttribute('th:href') || '/schedules'; // Default значення
             
             // Виконати додаткові дії перед переходом
             console.log("Button clicked. Redirecting to the homepage...");
